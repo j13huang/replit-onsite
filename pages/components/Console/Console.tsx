@@ -71,6 +71,14 @@ const Console = () => {
           onKeyDown={(e) => {
             let lines = codeInput.split("\n");
             let firstLineLength = lines[0].length;
+            let lastLineLength = lines.slice(0, -1).join("\n").length;
+            console.log(
+              e.key,
+              firstLineLength,
+              lastLineLength,
+              inputRef.current.selectionStart,
+              inputRef.current.selectionEnd
+            );
 
             if (
               e.key === "ArrowUp" &&
@@ -81,6 +89,7 @@ const Console = () => {
               setCodeInput(inputHistory[inputHistoryIndex - 1]);
               setInputHistoryIndex(inputHistoryIndex - 1);
               console.log(
+                "moving up",
                 e.key,
                 inputRef.current.selectionStart,
                 firstLineLength
@@ -88,7 +97,6 @@ const Console = () => {
               return;
             }
 
-            let lastLineLength = lines.slice(0, -1).join("\n").length;
             if (
               e.key === "ArrowDown" &&
               inputRef.current.selectionEnd >= lastLineLength &&
@@ -97,17 +105,14 @@ const Console = () => {
               // moving down past the bottom line
               setCodeInput(inputHistory[inputHistoryIndex + 1]);
               setInputHistoryIndex(inputHistoryIndex + 1);
-              console.log(e.key, inputRef.current.selectionEnd, lastLineLength);
+              console.log(
+                "moving down",
+                e.key,
+                inputRef.current.selectionEnd,
+                lastLineLength
+              );
               return;
             }
-
-            console.log(
-              e.key,
-              firstLineLength,
-              lastLineLength,
-              inputRef.current.selectionStart,
-              inputRef.current.selectionEnd
-            );
           }}
           value={codeInput}
         ></textarea>
