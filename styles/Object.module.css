@@ -1,0 +1,19 @@
+.container {
+  display: flex;
+}
+
+.expandButton {
+  cursor: default;
+}
+
+.key {
+  color: blue;
+}
+
+.primitiveSubkey {
+  padding-left: 16px;
+}
+
+.expandedEntry {
+  display: flex;
+}

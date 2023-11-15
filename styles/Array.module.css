@@ -1,0 +1,23 @@
+.expandedEntry {
+  display: flex;
+}
+
+.expandButton {
+  cursor: default;
+}
+
+.nonRootHeaderLength {
+  color: grey;
+}
+
+.index {
+  color: blue;
+}
+
+.primitiveSubkey {
+  padding-left: 16px;
+}
+
+.expandedEntryLength {
+  color: rgba(0, 0, 255, 0.5);
+}
