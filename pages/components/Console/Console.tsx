@@ -72,6 +72,7 @@ const Console = () => {
             let lines = codeInput.split("\n");
             let firstLineLength = lines[0].length;
             let lastLineLength = lines.slice(0, -1).join("\n").length;
+            /*
             console.log(
               e.key,
               firstLineLength,
@@ -79,6 +80,7 @@ const Console = () => {
               inputRef.current.selectionStart,
               inputRef.current.selectionEnd
             );
+            */
 
             if (
               e.key === "ArrowUp" &&
@@ -120,7 +122,7 @@ const Console = () => {
           <button
             onClick={() => {
               setInputHistory([...inputHistory, codeInput]);
-              setInputHistoryIndex(inputHistory.length + 1);
+              setInputHistoryIndex(inputHistory.length);
               fetchResult(codeInput);
             }}
           >
