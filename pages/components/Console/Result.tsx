@@ -8,7 +8,8 @@ import Array from "../dataTypes/Array";
 import Error from "../dataTypes/Error";
 
 type Props = {
-  data: any;
+  data: { [key: string]: any };
+  referenceData: { [key: string]: any };
   // when we are in a nested object, we want to show the key in between the triangle and the value,
   // so we have this keyPrefix to render it properly
   keyPrefix?: React.ReactNode;
@@ -16,9 +17,15 @@ type Props = {
   isShorthand?: boolean;
 };
 
-const Result: React.FC<Props> = ({ data, keyPrefix, isRoot, isShorthand }) => {
-  //console.log("Result", data);
-  switch (data[0].type) {
+const Result: React.FC<Props> = ({
+  data,
+  referenceData,
+  keyPrefix,
+  isRoot,
+  isShorthand,
+}) => {
+  //console.log("Result", data, referenceData);
+  switch (data.type) {
     case "undefined":
       return <Undefined />;
     case "null":
@@ -33,16 +40,26 @@ const Result: React.FC<Props> = ({ data, keyPrefix, isRoot, isShorthand }) => {
       return isShorthand ? (
         <span>{"{…}"}</span>
       ) : (
-        <Object keyPrefix={keyPrefix} data={data} isRoot={isRoot} />
+        <Object
+          keyPrefix={keyPrefix}
+          data={data}
+          referenceData={referenceData}
+          isRoot={isRoot}
+        />
       );
     case "array":
       return isShorthand ? (
-        <span>Array({data[0].value.length})</span>
+        <span>Array({data.value.length})</span>
       ) : (
-        <Array keyPrefix={keyPrefix} data={data} isRoot={isRoot} />
+        <Array
+          keyPrefix={keyPrefix}
+          data={data}
+          referenceData={referenceData}
+          isRoot={isRoot}
+        />
       );
     case "error":
-      return isShorthand ? data[0].value.stack : <Error data={data} />;
+      return isShorthand ? data.value.stack : <Error data={data} />;
     default:
       return <div>{JSON.stringify(data)}</div>;
   }

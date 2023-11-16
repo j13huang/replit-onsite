@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import styles from "../../../styles/Object.module.css";
 
 const Error = ({ data }) => {
-  let error = data[0].value;
+  let error = data.value;
   return (
     <span>
       <span>

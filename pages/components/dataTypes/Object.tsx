@@ -4,7 +4,8 @@ import styles from "../../../styles/Object.module.css";
 import Result from "../Console/Result";
 
 type Props = {
-  data: any;
+  data: { [key: string]: any };
+  referenceData: { [key: string]: any };
   // when we are in a nested object, we want to show the key in between the triangle and the value,
   // so we have this keyPrefix to render it properly
   keyPrefix?: React.ReactNode;
@@ -12,9 +13,14 @@ type Props = {
   isRoot?: boolean;
 };
 
-const Object: React.FC<Props> = ({ data, keyPrefix, isRoot }) => {
+const Object: React.FC<Props> = ({
+  data,
+  referenceData,
+  keyPrefix,
+  isRoot,
+}) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const entries = data[0].value;
+  const entries = data.value;
   return (
     <div>
       <div className={styles.container}>
@@ -35,14 +41,14 @@ const Object: React.FC<Props> = ({ data, keyPrefix, isRoot }) => {
             {entries.map(({ key: keyIndex, value: valueIndex }, i) => {
               return (
                 <span key={i}>
-                  <span className={styles.key}>{data[keyIndex].value}</span>
+                  <span className={styles.key}>
+                    {referenceData[keyIndex].value}
+                  </span>
                   :&nbsp;
                   <span>
                     <Result
-                      data={{
-                        ...data,
-                        0: data[valueIndex],
-                      }}
+                      data={referenceData[valueIndex]}
+                      referenceData={referenceData}
                       isRoot={false}
                       isShorthand
                     />
@@ -60,15 +66,15 @@ const Object: React.FC<Props> = ({ data, keyPrefix, isRoot }) => {
           {entries.map(({ key: keyIndex, value: valueIndex }, i) => {
             //console.log(data[keyIndex]);
             let isNestedObject =
-              data[valueIndex].type === "object" ||
-              data[valueIndex].type === "array";
+              referenceData[valueIndex].type === "object" ||
+              referenceData[valueIndex].type === "array";
             return (
               <div key={i} className={styles.expandedEntry}>
                 &nbsp;&nbsp;
                 {!isNestedObject && (
                   <>
                     <div className={clsx(styles.key, styles.primitiveSubkey)}>
-                      {data[keyIndex].value}
+                      {referenceData[keyIndex].value}
                     </div>
                     :&nbsp;
                   </>
@@ -79,16 +85,14 @@ const Object: React.FC<Props> = ({ data, keyPrefix, isRoot }) => {
                       isNestedObject && (
                         <>
                           <span className={styles.key}>
-                            {data[keyIndex].value}
+                            {referenceData[keyIndex].value}
                           </span>
                           :
                         </>
                       )
                     }
-                    data={{
-                      ...data,
-                      0: data[valueIndex],
-                    }}
+                    data={referenceData[valueIndex]}
+                    referenceData={referenceData}
                     isRoot={false}
                   />
                 </div>

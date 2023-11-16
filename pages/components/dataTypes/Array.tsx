@@ -5,7 +5,8 @@ import Result from "../Console/Result";
 import Number from "./Number";
 
 type Props = {
-  data: any;
+  data: { [key: string]: any };
+  referenceData: { [key: string]: any };
   // when we are in a nested array, we want to show the key in between the triangle and the value,
   // so we have this keyPrefix to render it properly
   keyPrefix?: React.ReactNode;
@@ -13,9 +14,9 @@ type Props = {
   isRoot?: boolean;
 };
 
-const Array: React.FC<Props> = ({ data, keyPrefix, isRoot }) => {
+const Array: React.FC<Props> = ({ data, referenceData, keyPrefix, isRoot }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const entries = data[0].value;
+  const entries = data.value;
   return (
     <div>
       <div className={styles.container}>
@@ -46,10 +47,8 @@ const Array: React.FC<Props> = ({ data, keyPrefix, isRoot }) => {
               return (
                 <span key={i}>
                   <Result
-                    data={{
-                      ...data,
-                      0: data[valueIndex],
-                    }}
+                    data={referenceData[valueIndex]}
+                    referenceData={referenceData}
                     isShorthand
                     isRoot={false}
                   />
@@ -67,8 +66,8 @@ const Array: React.FC<Props> = ({ data, keyPrefix, isRoot }) => {
         <div>
           {entries.map((valueIndex, i) => {
             let isNestedObject =
-              data[valueIndex].type === "object" ||
-              data[valueIndex].type === "array";
+              referenceData[valueIndex].type === "object" ||
+              referenceData[valueIndex].type === "array";
             return (
               <div key={i} className={styles.expandedEntry}>
                 &nbsp;&nbsp;
@@ -91,10 +90,8 @@ const Array: React.FC<Props> = ({ data, keyPrefix, isRoot }) => {
                         </>
                       )
                     }
-                    data={{
-                      ...data,
-                      0: data[valueIndex],
-                    }}
+                    data={referenceData[valueIndex]}
+                    referenceData={referenceData}
                     isRoot={false}
                   />
                 </div>
@@ -104,8 +101,7 @@ const Array: React.FC<Props> = ({ data, keyPrefix, isRoot }) => {
           <div
             className={clsx(styles.expandedEntryLength, styles.primitiveSubkey)}
           >
-            &nbsp;&nbsp;length:{" "}
-            <Number data={{ 0: { value: entries.length } }} />
+            &nbsp;&nbsp;length: <Number data={{ value: entries.length }} />
           </div>
         </div>
       )}

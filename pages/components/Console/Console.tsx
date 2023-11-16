@@ -135,7 +135,7 @@ const Console = () => {
         <div className={styles.resultContainer}>
           <div>json result from Console.tsx: {JSON.stringify(result)}</div>
           <div>
-            <Result data={result} isRoot />
+            <Result data={result[0]} referenceData={result} isRoot />
           </div>
         </div>
       ) : null}
